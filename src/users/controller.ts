@@ -1,10 +1,6 @@
-import prisma from "../client";
+import prisma from "../PrismaClient";
 import { Request, Response } from "express";
-
-interface CreateRequisition {
-  username: string;
-  password: string;
-}
+import { CreateRequisition } from "./types";
 
 export default {
   async create(

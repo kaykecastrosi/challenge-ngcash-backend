@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Accounts {
-  id      Int      @id
+  id      Int      @id @default(autoincrement())
   balance Decimal? @db.Decimal(15, 2)
   Users   Users[]
 }
 
 model Transactions {
-  id                                          Int      @id
+  id                                          Int      @id @default(autoincrement())
   debitedAccountId                            Int?
   creditedAccountId                           Int?
   accountId                                   Int?
@@ -24,7 +24,7 @@ model Transactions {
 }
 
 model Users {
-  id                                                 Int            @id
+  id                                                 Int            @id @default(autoincrement())
   username                                           String?        @db.VarChar(30)
   password                                           String?        @db.VarChar(120)
   accountId                                          Int?

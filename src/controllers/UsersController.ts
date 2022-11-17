@@ -10,7 +10,10 @@ export default {
   async create(
     req: Request<{}, {}, CreateRequisition>,
     res: Response
-  ): Promise<void> {
+  ): Promise<Response | undefined> {
+    if (!req.body.password || !req.body.username) {
+      return res.json({ status: false, message: "Complete all fields" });
+    }
     const createUser = await prisma.accounts.create({
       data: {
         balance: 100.0,

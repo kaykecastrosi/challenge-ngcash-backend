@@ -1,25 +1,25 @@
 CREATE TABLE "public"."Accounts" (
-  id int NOT NULL,
-  balance NUMERIC(15,2),
+  id SERIAL,
+  balance NUMERIC(15,2) NOT NULL,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE "public"."Users" (
-  id int NOT NULL,
-  username varchar(30),
-  password varchar(120),
-  "accountId" INTEGER,
+  id SERIAL,
+  username varchar(30) NOT NULL,
+  password varchar(120) NOT NULL,
+  "accountId" INTEGER NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT account FOREIGN KEY ("accountId") REFERENCES "public"."Accounts" (id)
+  FOREIGN KEY ("accountId") REFERENCES "public"."Accounts" (id)
 );
 
 CREATE TABLE "public"."Transactions" (
-  id int NOT NULL,
-  "debitedAccountId" INTEGER,
-  "creditedAccountId" INTEGER,
-  "accountId" INTEGER,
-  value NUMERIC(15,2),
+  id SERIAL,
+  "debitedAccountId" INTEGER NOT NULL,
+  "creditedAccountId" INTEGER NOT NULL,
+  value NUMERIC(15,2) NOT NULL,
+  "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  CONSTRAINT "debitedAccount" FOREIGN KEY ("debitedAccountId") REFERENCES "public"."Users" (id),
-  CONSTRAINT "creditedAccount" FOREIGN KEY ("creditedAccountId") REFERENCES "public"."Users" (id)
+  FOREIGN KEY ("debitedAccountId") REFERENCES "public"."Users" (id),
+  FOREIGN KEY ("creditedAccountId") REFERENCES "public"."Users" (id)
 );

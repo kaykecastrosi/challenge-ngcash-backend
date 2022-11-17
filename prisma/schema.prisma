@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Accounts {
+  id      Int      @id
+  balance Decimal? @db.Decimal(15, 2)
+  Users   Users[]
+}
+
+model Transactions {
+  id                                          Int      @id
+  debitedAccountId                            Int?
+  creditedAccountId                           Int?
+  accountId                                   Int?
+  value                                       Decimal? @db.Decimal(15, 2)
+  Users_Transactions_creditedAccountIdToUsers Users?   @relation("Transactions_creditedAccountIdToUsers", fields: [creditedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "creditedAccount")
+  Users_Transactions_debitedAccountIdToUsers  Users?   @relation("Transactions_debitedAccountIdToUsers", fields: [debitedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "debitedAccount")
+}
+
+model Users {
+  id                                                 Int            @id
+  username                                           String?        @db.VarChar(30)
+  password                                           String?        @db.VarChar(120)
+  accountId                                          Int?
+  Accounts                                           Accounts?      @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "account")
+  Transactions_Transactions_creditedAccountIdToUsers Transactions[] @relation("Transactions_creditedAccountIdToUsers")
+  Transactions_Transactions_debitedAccountIdToUsers  Transactions[] @relation("Transactions_debitedAccountIdToUsers")
+}

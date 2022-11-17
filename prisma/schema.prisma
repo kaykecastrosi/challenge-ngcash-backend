@@ -25,7 +25,7 @@ model Transactions {
 
 model Users {
   id                                                 Int            @id @default(autoincrement())
-  username                                           String         @db.VarChar(30)
+  username                                           String         @unique @db.VarChar(30)
   password                                           String         @db.VarChar(120)
   accountId                                          Int
   Accounts                                           Accounts       @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)

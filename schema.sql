@@ -6,7 +6,7 @@ CREATE TABLE "public"."Accounts" (
 
 CREATE TABLE "public"."Users" (
   id SERIAL,
-  username varchar(30) NOT NULL,
+  username varchar(30) UNIQUE NOT NULL,
   password varchar(120) NOT NULL,
   "accountId" INTEGER NOT NULL,
   PRIMARY KEY (id),

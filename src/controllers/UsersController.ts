@@ -1,14 +1,14 @@
 import prisma from "../client";
 import { Request, Response } from "express";
 
-interface CreateRequistion {
+interface CreateRequisition {
   username: string;
   password: string;
 }
 
 export default {
   async create(
-    req: Request<{}, {}, CreateRequistion>,
+    req: Request<{}, {}, CreateRequisition>,
     res: Response
   ): Promise<void> {
     const createUser = await prisma.accounts.create({

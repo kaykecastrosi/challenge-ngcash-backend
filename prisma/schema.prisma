@@ -8,27 +8,27 @@ datasource db {
 }
 
 model Accounts {
-  id      Int      @id @default(autoincrement())
-  balance Decimal? @db.Decimal(15, 2)
+  id      Int     @id @default(autoincrement())
+  balance Decimal @db.Decimal(15, 2)
   Users   Users[]
 }
 
 model Transactions {
   id                                          Int      @id @default(autoincrement())
-  debitedAccountId                            Int?
-  creditedAccountId                           Int?
-  accountId                                   Int?
-  value                                       Decimal? @db.Decimal(15, 2)
-  Users_Transactions_creditedAccountIdToUsers Users?   @relation("Transactions_creditedAccountIdToUsers", fields: [creditedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "creditedAccount")
-  Users_Transactions_debitedAccountIdToUsers  Users?   @relation("Transactions_debitedAccountIdToUsers", fields: [debitedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "debitedAccount")
+  debitedAccountId                            Int
+  creditedAccountId                           Int
+  value                                       Decimal  @db.Decimal(15, 2)
+  createdAt                                   DateTime @default(now()) @db.Timestamp(6)
+  Users_Transactions_creditedAccountIdToUsers Users    @relation("Transactions_creditedAccountIdToUsers", fields: [creditedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Users_Transactions_debitedAccountIdToUsers  Users    @relation("Transactions_debitedAccountIdToUsers", fields: [debitedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Users {
   id                                                 Int            @id @default(autoincrement())
-  username                                           String?        @db.VarChar(30)
-  password                                           String?        @db.VarChar(120)
-  accountId                                          Int?
-  Accounts                                           Accounts?      @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "account")
+  username                                           String         @db.VarChar(30)
+  password                                           String         @db.VarChar(120)
+  accountId                                          Int
+  Accounts                                           Accounts       @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Transactions_Transactions_creditedAccountIdToUsers Transactions[] @relation("Transactions_creditedAccountIdToUsers")
   Transactions_Transactions_debitedAccountIdToUsers  Transactions[] @relation("Transactions_debitedAccountIdToUsers")
 }

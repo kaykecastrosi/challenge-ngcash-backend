@@ -1,6 +1,13 @@
+import bcrypt from "bcrypt";
 import prisma from "../PrismaClient";
 import { Request, Response } from "express";
 import { CreateRequisition } from "./types";
+
+const passwordRegex = (password: string): boolean => {
+  return (
+    password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)
+  );
+};
 
 export default {
   async create(
@@ -9,6 +16,21 @@ export default {
   ): Promise<Response | undefined | void> {
     if (!req.body.password || !req.body.username) {
       return res.json({ status: false, message: "Complete all fields" });
+    }
+
+    if (req.body.username.length < 3) {
+      return res.json({
+        status: false,
+        message: "The username must have more than 3 letters",
+      });
+    }
+
+    if (!passwordRegex(req.body.password)) {
+      return res.json({
+        status: false,
+        message:
+          "The password must have at least eight characters, one uppercase letter and one number",
+      });
     }
 
     const userExists = await prisma.users.findUnique({
@@ -21,13 +43,15 @@ export default {
       return res.json({ status: false, message: "This user already exists" });
     }
 
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
     const createUser = await prisma.accounts.create({
       data: {
         balance: 100.6,
         Users: {
           create: {
             username: req.body.username,
-            password: req.body.password,
+            password: hashedPassword,
           },
         },
       },

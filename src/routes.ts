@@ -3,7 +3,7 @@ import UsersController from "./users/controller";
 
 const routes = express.Router();
 
-//Frete
-routes.put("/users", UsersController.create);
+//Users
+routes.post("/users", UsersController.create);
 
 export default routes;

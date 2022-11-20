@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import prisma from "../PrismaClient";
+import { Users } from "@prisma/client";
 import { Request, Response } from "express";
 import { CreateRequisition } from "./types";
 
@@ -47,7 +48,7 @@ export default {
 
     const createUser = await prisma.accounts.create({
       data: {
-        balance: 100.6,
+        balance: 100,
         Users: {
           create: {
             username: req.body.username,
@@ -57,5 +58,23 @@ export default {
       },
     });
     res.json(createUser);
+  },
+  async balance(
+    req: Request<{}, {}, CreateRequisition>,
+    res: Response
+  ): Promise<Response | undefined | void> {
+    const userId: Users = JSON.parse(req.headers["user"] as string);
+
+    const account = await prisma.accounts.findUnique({
+      where: {
+        id: userId.accountId,
+      },
+    });
+
+    if (!account) {
+      return res.json({ status: false, message: "Account not found." });
+    }
+
+    return res.json({ status: true, balance: account.balance });
   },
 };

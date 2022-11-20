@@ -19,8 +19,8 @@ model Transactions {
   creditedAccountId                           Int
   value                                       Decimal  @db.Decimal(15, 2)
   createdAt                                   DateTime @default(now()) @db.Timestamp(6)
-  Users_Transactions_creditedAccountIdToUsers Users    @relation("Transactions_creditedAccountIdToUsers", fields: [creditedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Users_Transactions_debitedAccountIdToUsers  Users    @relation("Transactions_debitedAccountIdToUsers", fields: [debitedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  creditedAccount Users    @relation("Transactions_creditedAccountIdToUsers", fields: [creditedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  debitedAccount  Users    @relation("Transactions_debitedAccountIdToUsers", fields: [debitedAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Users {

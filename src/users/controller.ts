@@ -60,14 +60,14 @@ export default {
     res.json(createUser);
   },
   async balance(
-    req: Request<{}, {}, CreateRequisition>,
+    req: Request,
     res: Response
   ): Promise<Response | undefined | void> {
-    const userId: Users = JSON.parse(req.headers["user"] as string);
+    const user: Users = JSON.parse(req.headers["user"] as string);
 
     const account = await prisma.accounts.findUnique({
       where: {
-        id: userId.accountId,
+        id: user.accountId,
       },
     });
 

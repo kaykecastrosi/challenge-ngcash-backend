@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jsonwebtoken, { Secret } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 import prisma from "../PrismaClient";
 
 export default async function validateToken(
@@ -31,7 +31,7 @@ export default async function validateToken(
     if (!userExists) {
       return response.json({
         status: false,
-        message: "User doesnt exists. Invalid Token",
+        message: "User doesn't exists. Invalid Token",
       });
     } else {
       request.headers["user"] = JSON.stringify(userExists);

@@ -4,6 +4,7 @@ import UsersController from "./users/controller";
 import login from "./services/login";
 import transaction from "./services/transaction";
 import transactionsHistory from "./services/transactionsHistory";
+import isAuthenticated from "./services/isAuthenticated";
 
 const routes = express.Router();
 
@@ -13,6 +14,7 @@ routes.get("/balance", AuthMiddleware, UsersController.balance);
 
 //Services
 routes.post("/login", login);
+routes.post("/isAuthenticated", isAuthenticated);
 routes.put("/transaction", AuthMiddleware, transaction);
 routes.get("/realizedTransactions", AuthMiddleware, transactionsHistory);
 
